@@ -1,0 +1,47 @@
+body{
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  max-width: 800px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+div#login{
+  float: right;
+  border: 1px;
+  padding: 10px;
+  border-width: 2px; 
+  border-style: solid; 
+  border-color: #ccc;
+}
+
+div#header a{
+ font: 18px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+div#delete{
+  float: right;
+}
+
+div#header div#right{
+  float: right; 
+}
+
+div#message{
+  color: red; 
+}
+
+
+
+
+circle.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+line.link {
+  stroke: #999;
+  stroke-opacity: .6;
+}

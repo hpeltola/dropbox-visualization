@@ -1,0 +1,25 @@
+// Shows the register form
+
+extends layout
+
+block content
+  div#register
+    form(action='/register', method='post')
+      fieldset(data-role='controlgroup')
+        div(data-role='fieldcontain')
+          label(for='username') username
+            input(id='username',type='text',value='#{username}',placeholder='',name='newusername')
+        div(data-role='fieldcontain')
+          label(for='firstname') firstname
+            input(id='firstname',type='text',value='#{firstname}',placeholder='',name='firstname')
+        div(data-role='fieldcontain')
+          label(for='lastname') lastname
+            input(id='lastname',type='text',value='#{lastname}',placeholder='',name='lastname')            
+        div(id='password',data-role='fieldcontain')
+          label(for='hidden_password') password
+            input(id='hidden_password',type='text',value='',placeholder='',name='newpassword')
+        div(data-role='fieldcontain')
+          label(for='email') email
+            input(id='email',type='text',value='#{email}',placeholder='@',name='email')
+        div(data-role='fieldcontain')   
+          input(type='submit',value='Sign Up',data-transition='fade', data-theme='c')

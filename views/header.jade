@@ -1,0 +1,28 @@
+
+block header
+    div#header
+      nav
+
+        a(href='/') Home
+        | &nbsp;       
+        if (typeof(user_id) == 'undefined' || user_id == null)
+          div#login
+            form(name="input", action="/login", method="post")
+              | Username: 
+              input(type="text", name="username")
+              br
+              | Password: 
+              input(type="text", name="password")
+              br
+              input(type="submit", value="Login")
+
+        else
+          div#right
+            a#right(href='/user') User info
+            | &nbsp;|&nbsp;
+            a#right(href='/logout') Logout
+
+          | | &nbsp;
+          a(href='/graph/dropbox') Graph
+        
+    hr

@@ -1,13 +1,13 @@
-== Dropbox visualization
+## Dropbox visualization
 
-== Initialization
+## Initialization
 
-=== Dropbox app_key & app_secret
+### Dropbox app_key & app_secret
 
 In Dropbox developer (https://www.dropbox.com/developers), an app must be created.
 'App_key', and 'app_secret' must be set in /routes/common.js
 
-=== Database and tables must be created
+### Database and tables must be created
 
 CREATE DATABASE dropbox_visual;
 

@@ -1,0 +1,75 @@
+// Show user info
+extends layout
+
+block scripts
+
+  script 
+      
+    function makeSureDelete(path) {
+      if (confirm('Permanently delete user?')) {
+        $.ajax({
+          type: "DELETE",
+          url: path,
+          success: function(msg){
+                 alert("User deleted permanently");
+                 window.open ('/logout','_self',false);
+          }
+        });
+      }
+    }
+
+    function makeSureRemoveDropboxLink(path){
+      if( confirm("Remove user account's link to Dropbox")){
+        $.ajax({
+          type: "DELETE",
+          url: path, 
+          success: function(msg){
+            window.open('/user', '_self', false);
+          }
+        });
+      }
+    }
+
+
+
+block content
+  block scripts
+  h1 User info
+  div#modifyUser
+    form(action='/user', method='post')
+      fieldset(data-role='controlgroup')
+        div(data-role='fieldcontain')
+          div
+            input(id='username',type='text',value='#{username}',placeholder='',name='username', type='hidden')
+            b username: 
+            | #{username}            
+          div(data-role='fieldcontain')
+            label(for='firstname') firstname 
+              input(id='firstname',type='text',value='#{firstname}',placeholder='',name='firstname')
+          div(data-role='fieldcontain')
+            label(for='lastname') lastname 
+              input(id='lastname',type='text',value='#{lastname}',placeholder='',name='lastname')            
+          div(id='password',data-role='fieldcontain')
+            label(for='hidden_password') password 
+              input(id='hidden_password',type='text',value='',placeholder='',name='password')
+          div(data-role='fieldcontain')
+            label(for='email') email 
+              input(id='email',type='text',value='#{email}',placeholder='@',name='email')
+          div(data-role='fieldcontain')   
+            input(type='submit',value='Save',data-transition='fade', data-theme='c')
+
+    div#dropbox
+      h2 Dropbox integration
+      fieldset    
+        if( dropbox_linked == true )
+          p Dropbox is linked!
+          button(type="button", onclick="makeSureRemoveDropboxLink('/dropbox_link')") Remove Dropbox link
+        else 
+          a(href='/dropbox_request_token') Link dropbox account
+          
+
+
+    div#delete
+      | Delete the whole user: <button type="button" onclick="makeSureDelete('/user')">Delete user</button>
+      
+

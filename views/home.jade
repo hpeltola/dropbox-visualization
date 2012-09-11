@@ -1,0 +1,18 @@
+block message
+  if (typeof(message) != 'undefined')
+    p #{message}
+
+
+
+extends layout
+
+block content
+  script
+    
+
+  h1 Welcome
+  block message
+  a(href='/register') Register
+
+
+

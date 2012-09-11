@@ -1,0 +1,89 @@
+// Show user info
+extends layout
+
+block scripts
+
+  script(src="/javascripts/d3.v2.js", type="text/javascript")
+  script(src="/javascripts/force.js", type="text/javascript")
+  script(src="/socket.io/socket.io.js")
+
+  script 
+
+    var socket = io.connect();
+    
+    // Receive data
+    socket.on('dropbox', function (data){
+      if( data.type == "folder" ){
+        $('body svg').css('visibility','visible');
+        $('div#user_info').empty();
+        showDropboxItemsInGraph( JSON.stringify(data.items) );
+      }
+      else if( data.type == "search" ){
+        $('body svg').css('visibility','visible');
+        $('div#user_info').empty();
+        showDropboxSearchResultsInGraph( JSON.stringify(data.items) );  
+      }
+      else if( data.type == "file" ){
+        window.open(data.url, '_blank');
+      }
+      else if( data.type == "userInfo" ){
+        $('body svg').css('visibility','hidden');
+        nodes.splice(0,nodes.length);
+        links.splice(0,links.length);
+
+        $('div#path').text('');
+        $('div#user_info').append('<h2>Account info</h2>');
+        $('div#user_info').append('<p><b>Name: </b>'+data.items.display_name+'</p>');
+        $('div#user_info').append('<p><b>Email: </b>'+data.items.email+'</p>');
+        $('div#user_info').append('<p><b>Uid: </b>'+data.items.uid+'</p>');
+        var space = (data.items.quota_info.normal + data.items.quota_info.shared) / data.items.quota_info.quota * 100
+        $('div#user_info').append('<p><b>Space: </b>'+space.toFixed(2)+'%</p>');
+        $('div#user_info').append('<p><button type="button" onclick="getDropboxFolder(' + "'/'" + ')">Show files</button></p>');
+      }
+    });
+
+    // Send request to server using websockets
+    function getDropboxFolder(path){
+      socket.emit("dropbox", { action: 'getFolder', path: path, user_id: #{user_id} });
+    }
+    
+    function getDropboxFile(path){
+      socket.emit("dropbox", {action: 'getFile', path: path, user_id: #{user_id} });
+    }
+
+    function getDropboxUserInfo(){
+
+      socket.emit("dropbox", { action: 'getUserInfo', user_id: #{user_id} });
+    }
+
+    function searchDropboxFiles(){
+      socket.emit("dropbox", { action: 'searchFiles', user_id: #{user_id}, query: $("input#search_input").val() });
+    }
+
+    var reply = !{JSON.stringify(reply)};
+
+    $(document).ready(function(){
+
+      showDropboxItemsInGraph(reply);
+          
+      $("input#search_input").keypress(function(e){
+        if( e.which == 13 ){
+          searchDropboxFiles();
+        }
+      });
+
+    });
+
+
+block content
+  
+  h1 Dropbox graph
+  div#path
+    
+  div#user_info
+
+  block scripts
+
+  input#search_input
+  button(type="button", onclick="searchDropboxFiles()") Search
+    
